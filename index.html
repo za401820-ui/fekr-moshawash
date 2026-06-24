@@ -1,11 +1,88 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>فكر مشوش</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فكر مشوش - محرك المحتوى الشامل</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<h1>مرحباً بك في فكر مشوش</h1>
-<p>الموقع قيد التطوير.</p>
+
+    <div class="control-panel">
+        <h2>مولد المحتوى الذكي</h2>
+        
+        <div class="btn-grid">
+            <button class="action-btn quran-btn" onclick="fetchQuranAPI()">📖 آية عشوائية وتفسير (API)</button>
+            <button class="action-btn hadith-btn" onclick="fetchHadith()">📜 حديث نبوي أو قدسي</button>
+            <button class="action-btn quote-btn" onclick="fetchQuote()">💡 مقولة عميقة وخاطرة</button>
+        </div>
+
+        <div class="input-group">
+            <label>النص الرئيسي:</label>
+            <textarea id="mainTextInput" oninput="updatePreview()">﴿ وَتَوَكَّلْ عَلَى الْحَيِّ الَّذِي لَا يَمُوتُ ﴾</textarea>
+        </div>
+
+        <div class="input-group">
+            <label>الخاطرة / التفسير:</label>
+            <textarea id="commentaryInput" oninput="updatePreview()">طمأنينة القلب كلها تكمن في هذه الآية؛ أن تُسند ظهرك وثقل أيامك ومخاوفك إلى حيّ باقٍ سبحانه، لا يعتريه غياب ولا زوال.</textarea>
+        </div>
+
+        <div class="input-group">
+            <label>المصدر:</label>
+            <input type="text" id="sourceInput" value="سورة الفرقان - آية 58" oninput="updatePreview()">
+        </div>
+
+        <div class="tools-row">
+            <div class="range-tool">
+                <label>حجم النص الرئيسي</label>
+                <input type="range" id="verseSize" min="16" max="40" value="25" oninput="updatePreview()">
+            </div>
+            <div class="range-tool">
+                <label>حجم الخاطرة</label>
+                <input type="range" id="commentarySize" min="14" max="24" value="17" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <button class="action-btn compile-btn" onclick="compileImage()">📸 التقاط الصورة (HD)</button>
+    </div>
+
+    <div class="preview-area">
+        <div class="notes-container" id="capture-node">
+            <div class="header-bar">
+                <div class="header-right">ملاحظات</div>
+                <div class="header-left">
+                    <span>can</span> <span>⇡</span> <span>⋯</span> <span class="done-btn">تم</span>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <div class="avatar"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                <div class="user-info">
+                    <span class="username">فكر مشوش</span>
+                    <span class="verified-badge"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>
+                </div>
+                <button class="follow-btn">تابع</button>
+            </div>
+
+            <div class="content-area">
+                <span class="main-text-display" id="mainTextDisplay" style="font-family: 'Amiri Quran', serif;">﴿ وَتَوَكَّلْ عَلَى الْحَيِّ الَّذِي لَا يَمُوتُ ﴾</span>
+                <div class="commentary-text" id="commentaryDisplay">طمأنينة القلب كلها تكمن في هذه الآية؛ أن تُسند ظهرك وثقل أيامك ومخاوفك إلى حيّ باقٍ سبحانه، لا يعتريه غياب ولا زوال.</div>
+                <div class="source-text" id="sourceDisplay">سورة الفرقان - آية 58</div>
+            </div>
+
+            <div class="footer-bar">
+                <span>✎</span> <span>☍</span> <span>🗑</span> <span>📋</span> <span>⌨</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
