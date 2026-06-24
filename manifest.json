@@ -1,0 +1,46 @@
+{
+  "name": "فكر مشوش - محرك المحتوى الإسلامي الذكي",
+  "short_name": "فكر مشوش",
+  "description": "تطبيق ويب لإنشاء محتوى إسلامي متنوع: آيات قرآنية وأحاديث نبوية ومقولات عميقة مع التقاط الصور",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f13",
+  "theme_color": "#d4a373",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screenshots/screenshot-1.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["lifestyle", "productivity"],
+  "shortcuts": [
+    {
+      "name": "آية عشوائية",
+      "short_name": "آية",
+      "description": "احصل على آية قرآنية عشوائية مع التفسير",
+      "url": "/?action=quran",
+      "icons": [{ "src": "assets/icons/quran-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "حديث نبوي",
+      "short_name": "حديث",
+      "description": "احصل على حديث نبوي أو قدسي عشوائي",
+      "url": "/?action=hadith",
+      "icons": [{ "src": "assets/icons/hadith-icon.png", "sizes": "96x96" }]
+    }
+  ]
+}
